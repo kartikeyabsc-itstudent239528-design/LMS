@@ -4,11 +4,9 @@ import db from "../db.js";
 
 const router = express.Router();
 
-
-
-router.get("/", authMiddleware, requireAdmin, async(req, res) => {
-    const users = await db.allAsync("SELECT id, name, email, role, createdAt FROM users ORDER BY createdAt DESC");
-    res.json(users);
+router.get("/", authMiddleware, requireAdmin, (req, res) => {
+  const users = db.prepare("SELECT id, name, email, role, createdAt FROM users ORDER BY createdAt DESC").all();
+  res.json(users);
 });
 
 export default router;
